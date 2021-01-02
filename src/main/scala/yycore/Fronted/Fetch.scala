@@ -17,11 +17,11 @@ class Fetch extends Module{
   val io = IO(new FetchIO)
 
 
-  val fe_inst = RegInit(Instructions.NOP)
-  val fe_pc   = Reg(UInt())
+  val ex_inst = RegInit(Instructions.NOP)     // ex级对应的pc, inst
+  val ex_pc   = Reg(UInt())
 
 
-  val pc      = RegInit(PC_START.U(xlen.W))
+  val pc      = RegInit(PC_START.U(xlen.W))   // 当前拍的pc
   val npc     = Wire(UInt(xlen.W))
   val inst    = Wire(UInt(inst_len.W))
 
@@ -33,16 +33,16 @@ class Fetch extends Module{
   io.icache.en    := true.B
 
   when(true.B){
-    fe_pc   := pc
-    fe_inst := inst
+    ex_pc   := pc
+    ex_inst := inst
   }
 
   // bus
-  io.fe_to_ex.fe_pc   := fe_pc
-  io.fe_to_ex.fe_inst := fe_inst
+  io.fe_to_ex.ex_pc   := ex_pc
+  io.fe_to_ex.ex_inst := ex_inst
 
   if(DEBUG_P){
-    printf("IF : pc=[%x] inst=[%x]\n", fe_pc, fe_inst)
+    printf("IF : pc=[%x] inst=[%x]\n", pc, inst)
   }
 
 }

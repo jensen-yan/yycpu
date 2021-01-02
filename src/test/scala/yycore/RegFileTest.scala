@@ -12,17 +12,17 @@ class RegFileTest(c: RegFile) extends PeekPokeTester(c){
     val addr = rnd.nextInt(64)
     val data = rnd.nextInt(10000)
     // write
-    poke(rf.io.waddr, addr)
-    poke(rf.io.wdata, data)
-    poke(rf.io.wen, 1)
+    poke(rf.io.w.addr, addr)
+    poke(rf.io.w.data, data)
+    poke(rf.io.w.en, 1)
     step(1)
     // read
     // input
-    poke(rf.io.raddr2, addr)
+    poke(rf.io.r.addr2, addr)
     // exe
 
     // out
-    expect(rf.io.rdata2, data)
+    expect(rf.io.r.data2, data)
   }
 
 }

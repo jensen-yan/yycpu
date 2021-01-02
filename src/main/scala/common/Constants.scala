@@ -7,7 +7,6 @@ import chisel3.util._
 object Constants extends
   Common_constants with
   ALU_constans with
-  RegFile_constants with
   Control_constants
 {}
 
@@ -19,11 +18,10 @@ trait Common_constants {
   val PC_START = 0    // todo
 
   val DEBUG_P = true
+
+  val addr_w = log2Ceil(xlen)
 }
 
-trait RegFile_constants{
-  val addr_w = log2Ceil(64)   // =6, 大于5就行// todo; 能改
-}
 
 trait ALU_constans{
   val op_w = 4

@@ -11,8 +11,8 @@ import yycore.Exe.Execute
 
 
 class Fe_to_ex extends Bundle{
-  val fe_inst = UInt(inst_len.W)
-  val fe_pc   = UInt(xlen.W)
+  val ex_inst = UInt(inst_len.W)
+  val ex_pc   = UInt(xlen.W)
 }
 
 class Ex_to_fe extends Bundle{
@@ -20,9 +20,9 @@ class Ex_to_fe extends Bundle{
 }
 
 class Ex_to_wb extends Bundle{
-  val ex_inst = UInt(inst_len.W)
-  val ex_alu  = UInt(xlen.W)
-  val ex_pc   = UInt(xlen.W)
+  val wb_inst = UInt(inst_len.W)
+  val wb_alu  = UInt(xlen.W)
+  val wb_pc   = UInt(xlen.W)
 
   val wb_sel  = UInt()
   val wb_wen  = UInt()
@@ -40,9 +40,12 @@ class Datapath extends Module{
   val execute = Module(new Execute)
   val write   = Module(new Wirte)
   val ctrl    = Module(new Control)
+  val regFile = Module(new RegFile)
 
   execute.io.ctrl <> ctrl.io
   fetch.io.icache <> io.icache
+  regFile.io.r <> execute.io.regFileR
+  regFile.io.w <> write.io.regFileW
 
   // 三级流水线数据传输
   fetch.io.fe_to_ex <> execute.io.fe_to_ex
